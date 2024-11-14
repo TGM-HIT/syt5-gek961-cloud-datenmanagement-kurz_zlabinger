@@ -39,5 +39,9 @@ public class UserServiceImpl implements UserService {
         return email -> userRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found!"));
     }
+
+    public void clearDB() {
+        userRepository.deleteAll();
+    }
 }
 

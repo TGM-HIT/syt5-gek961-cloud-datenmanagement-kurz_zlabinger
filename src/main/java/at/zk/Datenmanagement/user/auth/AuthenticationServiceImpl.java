@@ -48,6 +48,7 @@ public class AuthenticationServiceImpl {
         var user = User.builder()
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(pepperedPassword))
+                .name(request.getName())
                 .role(Role.READER)
                 .build();
 
