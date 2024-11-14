@@ -10,5 +10,4 @@ public class DatenmanagementApplication {
 		SpringApplication.run(DatenmanagementApplication.class, args);
 	}
 
-
 }
