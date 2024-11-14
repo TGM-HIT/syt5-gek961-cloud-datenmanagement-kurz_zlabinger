@@ -2,13 +2,12 @@ package at.zk.Datenmanagement.user.auth;
 
 
 import at.zk.Datenmanagement.user.UserRepository;
-import at.zk.Datenmanagement.user.auth.requests.AuthenticationRequest;
+import at.zk.Datenmanagement.user.auth.requests.SigninRequest;
 import at.zk.Datenmanagement.user.auth.requests.RegisterRequest;
 import at.zk.Datenmanagement.user.entities.Role;
 import at.zk.Datenmanagement.user.entities.User;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONObject;
-import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -38,7 +37,7 @@ public class AuthenticationServiceImpl {
             return ResponseEntity.badRequest().body("Password is not valid.");
         }
 
-        if(this.userRepository.findByEmail(request.getEmail()).isPresent()) {
+        if(this.userRepository.findUserByEmail(request.getEmail()).isPresent()) {
             System.out.println("User with email: " + request.getEmail() + " already exists!");
 
             return ResponseEntity.status(409).body("User with email: " + request.getEmail() + " already exists!");
@@ -54,15 +53,10 @@ public class AuthenticationServiceImpl {
 
         userRepository.save(user);
 
-        var jwtToken = jwtService.generateToken(user);
-
-        HashMap<String, String> map = new HashMap<>();
-        map.put("token", jwtToken);
-
         return ResponseEntity.ok().body("Added user with email: " + request.getEmail());
     }
 
-    public ResponseEntity<?> signin(AuthenticationRequest request) {
+    public ResponseEntity<?> signin(SigninRequest request) {
 
         final String pepperedPassword = User.pepper + request.getPassword();
 

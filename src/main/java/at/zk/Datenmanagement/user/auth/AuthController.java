@@ -1,12 +1,11 @@
 package at.zk.Datenmanagement.user.auth;
 
 import at.zk.Datenmanagement.user.UserServiceImpl;
-import at.zk.Datenmanagement.user.auth.requests.AuthenticationRequest;
+import at.zk.Datenmanagement.user.auth.requests.SigninRequest;
 import at.zk.Datenmanagement.user.auth.requests.RegisterRequest;
 import at.zk.Datenmanagement.user.entities.User;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
-import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,7 +34,7 @@ public class AuthController {
     }
 
     @PostMapping("/auth/signin")
-    public ResponseEntity<?> signin(@RequestBody AuthenticationRequest request) {
+    public ResponseEntity<?> signin(@RequestBody SigninRequest request) {
         return authService.signin(request);
     }
 

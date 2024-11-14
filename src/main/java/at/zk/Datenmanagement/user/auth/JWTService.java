@@ -6,6 +6,10 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -20,8 +24,8 @@ import java.util.function.Function;
 @Service
 public class JWTService {
 
-    //FIXME: Write secret to env
-    private static final String SECRET = "TGIGGKFJYLIFYIKFJYGKJFJGYGUGGUJHGYGKUGgkgikfguiGYIughGfygkkfgUguigIUigu0";
+    @Autowired
+    private Environment environment;
 
     public String extractEmail(String token) {
         return extractClaim(token, Claims::getSubject);
@@ -62,7 +66,7 @@ public class JWTService {
     }
 
     private Key getSignInKey() {
-        byte[] keyBytes = Decoders.BASE64.decode(SECRET);
+        byte[] keyBytes = Decoders.BASE64.decode(environment.getProperty("jwt.secret"));
         return Keys.hmacShaKeyFor(keyBytes);
     }
 

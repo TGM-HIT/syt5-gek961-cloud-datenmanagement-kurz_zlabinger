@@ -29,8 +29,6 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
-        Logger logger = LoggerFactory.getLogger(JWTAuthenticationFilter.class);
-        logger.error("filter");
 
         final String authHeader = request.getHeader("Authorization");
         final String jwt;
@@ -42,7 +40,6 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
         jwt = authHeader.substring(BEARER.length());
-        logger.error("token: {}", jwt);
         try {
             email = jwtService.extractEmail(jwt);
         }catch(MalformedJwtException e) {
@@ -53,9 +50,6 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
             return;
         }
-
-        logger.error("email: {}", email);
-
 
         if(SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = this.userService.userDetailService().loadUserByUsername(email);

@@ -6,6 +6,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.Enumerated;
 import lombok.*;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -29,8 +30,8 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    //FIXME: Change to env
-    public static String pepper = "adaw";
+    @Value("${user.pepper}")
+    public static String pepper;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
